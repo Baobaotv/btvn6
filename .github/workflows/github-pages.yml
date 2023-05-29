@@ -1,6 +1,6 @@
 name: Docker build
 on:
-    push:g
+    push:
         branches:
             - main
 jobs:
