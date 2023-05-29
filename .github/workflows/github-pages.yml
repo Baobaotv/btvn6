@@ -3,6 +3,10 @@ on:
     push:
         branches:
             - main
+env:
+    SSH_ADDRESS: ${{ secrets.SSH_ADDRESS }}
+    SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -28,11 +32,11 @@ jobs:
                   push: true
                   tags: baonx/bt6:latest
 
-            - name: Pull and Run Docker Image
+            - name: Pull and Run Docker Imageg
               id: build-deploy
               run: |
                   mkdir -p ~/.ssh
                   ssh-keyscan -H $SSH_ADDRESS  >> ~/.ssh/known_hosts
                   echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
                   chmod 600 ~/.ssh/id_rsa
-                  ssh ubuntu@$SSH_ADDRESS "cd /var/www/html;"
+                  ssh ubuntu@$SSH_ADDRESS "cd /var/www/html; docker pull baonx/bt6:latest"
